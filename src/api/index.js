@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const KEY = 'AIzaSyDMRHdXufmiKF6fYoRroM6gXFTqYVMHkw4';
+const KEY = import.meta.env.VITE_API_KEY;
 
 
 const getPlaylist = async (playlistId, pageToken='', result = []) => {
@@ -13,7 +13,6 @@ const getPlaylist = async (playlistId, pageToken='', result = []) => {
     }
 
     return result;
-
 
 }
 
