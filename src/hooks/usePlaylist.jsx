@@ -9,10 +9,19 @@ import getPlaylist from "../api";
  *   recentPlaylists: Array,
  *   getPlaylistById: Function,
  *   addToFavorites: Function,
- *   addToRecent: Function
+ *   addToRecent: Function,
+ *   error: string,
+ *   loading: boolean
  * }}
  * @example
- * const { getPlaylistById, playlists, addToFavorites, addToRecent } = usePlaylist();
+ * const {
+ *   getPlaylistById,
+ *   playlists,
+ *   addToFavorites,
+ *   addToRecent,
+ *   error,
+ *   loading
+ * } = usePlaylist();
  *
  * // Fetch and log a playlist by ID
  * getPlaylistById("PL_XxuZqN0xVD0op-QDEgyXFA4fRPChvkl");
@@ -24,13 +33,16 @@ import getPlaylist from "../api";
  */
 const usePlaylist = () => {
   /**
-   * @description State management for playlists, favorites, and recent playlists.
+   * @description State management for playlists, favorites, recent playlists, error, and loading.
    */
   const [state, setState] = useState({
     playlists: {},
     recentPlaylists: [],
     favourites: [],
   });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   /**
    * @description Fetch a playlist by ID from the API.
@@ -43,57 +55,25 @@ const usePlaylist = () => {
       return;
     }
 
-    let result = await getPlaylist(playlistId);
-    let cid, ct; // cid and ct are used to store the channel ID and channel title of the playlist.
+    // If playlist doesn't exist in state, fetch it from the API
+    setLoading(true);
 
-    result = result.map((item) => {
-      /**
-       * @description Mapping API response to a simplified object. 
-       */
-      const {
-        channelId,
-        title,
-        description,
-        thumbnails: { medium },
-        channelTitle,
-        playlistId,
-      } = item.snippet;
-
-      if (!cid) {
-        cid = channelId;
-      }
-
-      if (!ct) {
-        ct = channelTitle;
-      }
-
-      return {
-        id: item.id,
-        title,
-        description,
-        thumbnail: medium,
-        contentDetails: item.contentDetails,
-      };
-    });
-
-
-    /**
-     * @description Updating state with the fetched playlist data.
-     */
-    setState((pre) => ({
-      ...pre,
-      playlists: {
-        ...pre.playlists,
-        [playlistId]: {
-          items: result, // Array of simplified playlist items
-          playlistId, // ID of the playlist
-          channelId: cid, // Channel ID of the playlist
-          channelTitle: ct, // Channel title of the playlist
+    try {
+      const playlist = await getPlaylist(playlistId);
+      setError("");
+      setState((pre) => ({
+        ...pre,
+        playlists: {
+          ...pre.playlists,
+          [playlistId]: playlist,
         },
-      },
-    }));
+      }));
+    } catch (error) {
+      setError(error.response?.data?.error?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
-
 
   /**
    * @description Add a playlist to the favorites list.
@@ -133,6 +113,8 @@ const usePlaylist = () => {
     getPlaylistById,
     addToFavorites,
     addToRecent,
+    error,
+    loading,
   };
 };
 

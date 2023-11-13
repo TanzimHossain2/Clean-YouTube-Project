@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Navbar from "./components/navbar";
 import usePlaylist from "./hooks/usePlaylist";
-
 const App = () => {
-  const { getPlaylistById, playlists } = usePlaylist();
-  useEffect(() => {
-    getPlaylistById("PL_XxuZqN0xVD0op-QDEgyXFA4fRPChvkl");
-  }, []);
+  const { playlists, getPlaylistById, error } = usePlaylist();
 
   console.log(playlists);
-
-  return <div>App</div>;
+  console.log(error);
+  return (
+    <>
+      <CssBaseline />
+      <Navbar PlaylistById={getPlaylistById}/>
+    </>
+  );
 };
 
 export default App;
