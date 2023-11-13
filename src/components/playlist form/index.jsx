@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const PlayListForm = ({ open, handleClose, getPlaylistId }) => {
   const [url, setUrl] = useState("");
@@ -18,12 +19,12 @@ const PlayListForm = ({ open, handleClose, getPlaylistId }) => {
 
   const handleSubmit = () => {
     //Todo handle url later
-    if(!url) {
-        alert("Please enter a valid URL or ID.");
+    if (!url) {
+      alert("Please enter a valid URL or ID.");
     } else {
-        getPlaylistId(url);
-        setUrl("");
-        handleClose();
+      getPlaylistId(url);
+      setUrl("");
+      handleClose();
     }
   };
 
@@ -52,6 +53,12 @@ const PlayListForm = ({ open, handleClose, getPlaylistId }) => {
       </DialogActions>
     </Dialog>
   );
+};
+
+PlayListForm.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  getPlaylistId: PropTypes.func.isRequired,
 };
 
 export default PlayListForm;

@@ -5,8 +5,9 @@ import Typography from "@mui/material/Typography";
 import { Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
 import PlayListForm from "../playlist form";
+import PropsType from "prop-types";
 
-const Navbar = ({PlaylistById}) => {
+const Navbar = ({ PlaylistById }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -18,7 +19,7 @@ const Navbar = ({PlaylistById}) => {
   };
 
   const getPlaylistId = (playlistId) => {
-    PlaylistById(playlistId)
+    PlaylistById(playlistId);
   };
 
   return (
@@ -50,6 +51,10 @@ const Navbar = ({PlaylistById}) => {
       </AppBar>
     </Box>
   );
+};
+
+Navbar.propTypes = {
+  PlaylistById: PropsType.func.isRequired,
 };
 
 export default Navbar;
