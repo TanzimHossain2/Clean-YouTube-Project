@@ -3,7 +3,7 @@ import Navbar from "./components/navbar";
 import usePlaylist from "./hooks/usePlaylist";
 import PlayListCard from "./components/playlist-card-itms";
 import { Container, Grid, Typography } from "@mui/material";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 
 const HomePage = ({ playlistArray }) => {
   return (
@@ -17,6 +17,7 @@ const HomePage = ({ playlistArray }) => {
                   channelTitle={item.channelTitle}
                   playlistThumbnails={item.playlistThumbnails}
                   playlistTitle={item.playlistTitle}
+                  playlistId={item.playlistId}
                 />
               </Grid>
           ))}
@@ -39,11 +40,21 @@ const NotFound = () => {
   );
 };
 
-const PlayerPage = () => {
+const PlayerPage = ({playlists}) => {
+  const {playlistId} =useParams();
+  const currentPlaylist = playlists[playlistId];
+
+  if(!currentPlaylist){
+    return <NotFound/>;
+  }
+
   return (
     <Container sx={{ marginTop: 16 }}>
-      <Typography variant="h1" align="center">
-       Clean YouTube Player
+      <Typography variant="h4" >
+      {currentPlaylist?.playlistTitle}
+      </Typography>
+      <Typography variant="h6" >
+      {currentPlaylist?.playlistDescription}
       </Typography>
     </Container>
   );
@@ -61,7 +72,7 @@ const App = () => {
       <Navbar PlaylistById={getPlaylistById} />
       <Routes>
         <Route path="/" element={<HomePage playlistArray={playlistArray} />} />
-        <Route path="/player" element={<PlayerPage />} />
+        <Route path="/player/:playlistId" element={<PlayerPage playlists={playlists} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

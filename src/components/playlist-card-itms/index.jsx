@@ -8,7 +8,7 @@ import { PlayArrow } from "@mui/icons-material";
 import PropsType from "prop-types";
 import { Link } from "react-router-dom";
 
-const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
+const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle,playlistId }) => {
   const style = {
     height: "100%",
     display: "flex",
@@ -37,7 +37,7 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <CardActions disableSpacing>
-        <Button to='/player' component={Link}>
+        <Button to={`/player/${playlistId}`} component={Link}>
           <Stack spacing={1} direction={"row"} alignItems={"center"}>
             <PlayArrow />
             <Typography variant="body2" fontWeight={600}>
@@ -56,6 +56,7 @@ PlayListCard.propTypes = {
   }),
   playlistTitle: PropsType.string,
   channelTitle: PropsType.string,
+  playlistId: PropsType.string,
 };
 
 export default PlayListCard;
