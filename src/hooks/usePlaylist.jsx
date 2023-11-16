@@ -1,5 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getPlaylist from "../api";
+import storage from "../utils/Store";
+const STORAGE_KEY = "cy_playlists_state";
+const DEFAULT_STATE = {
+  playlists: {},
+  recentPlaylists: [],
+  favourites: [],
+};
 
 /**
  * @description Custom React Hook for managing playlists and fetching data from an API.
@@ -31,18 +38,33 @@ import getPlaylist from "../api";
  * addToFavorites("PL_XxuZqN0xVD0op-QDEgyXFA4fRPChvkl");
  * addToRecent("PL_XxuZqN0xVD0op-QDEgyXFA4fRPChvkl");
  */
+
 const usePlaylist = () => {
   /**
    * @description State management for playlists, favorites, recent playlists, error, and loading.
    */
-  const [state, setState] = useState({
-    playlists: {},
-    recentPlaylists: [],
-    favourites: [],
-  });
+
+  const [state, setState] = useState(DEFAULT_STATE);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedState = storage.get(STORAGE_KEY);
+      if (storedState) {
+        setState({ ...storedState });
+      }
+    } catch (error) {
+      console.error("Error retrieving state from local storage:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (state !== DEFAULT_STATE) {
+      storage.save(STORAGE_KEY, state);
+    }
+  }, [state]);
 
   /**
    * @description Fetch a playlist by ID from the API.
