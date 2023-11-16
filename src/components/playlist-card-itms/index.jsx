@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Box, Button, Stack } from "@mui/material";
 import { PlayArrow } from "@mui/icons-material";
 import PropsType from "prop-types";
+import { Link } from "react-router-dom";
 
 const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
   const style = {
@@ -16,7 +17,7 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
   };
 
   return (
-    <Card sx={style}>
+    <Card sx={style} >
       <CardMedia
         component="img"
         image={playlistThumbnails.url}
@@ -36,7 +37,7 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <CardActions disableSpacing>
-        <Button>
+        <Button to='/player' component={Link}>
           <Stack spacing={1} direction={"row"} alignItems={"center"}>
             <PlayArrow />
             <Typography variant="body2" fontWeight={600}>

@@ -6,6 +6,8 @@ import { Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
 import PlayListForm from "../playlist form";
 import PropsType from "prop-types";
+import { Link as RouterLink } from "react-router-dom";
+import Link from '@mui/material/Link';
 
 const Navbar = ({ PlaylistById }) => {
   const [open, setOpen] = useState(false);
@@ -27,8 +29,10 @@ const Navbar = ({ PlaylistById }) => {
       <AppBar position="fixed" color="default" sx={{ py: 2 }}>
         <Container maxWidth="lg">
           <Toolbar>
-            <Stack sx={{ flexGrow: 1 }}>
-              <Typography variant="h5">Clean YouTube</Typography>
+            <Stack sx={{ flexGrow: 1 }}> 
+              <Link to="/" component={RouterLink} sx={{ textDecoration: "none" }}>
+                <Typography variant="h5">Clean YouTube</Typography>
+              </Link>
 
               <Typography variant="body1">
                 Free of ads, comments, and other distractions.
