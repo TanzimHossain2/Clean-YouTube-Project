@@ -42,7 +42,8 @@ const getPlaylist = async (playlistId) => {
   const { data } = await axios.get(URL);
   let playListItems = await getPlaylistItem(playlistId);
 
-  const { channelId, title: playlistTitle, description: playlistDescription, thumbnails, channelTitle } = data.items[0]?.snippet;
+  const firstItem = data.items[0];
+  const { channelId, title: playlistTitle, description: playlistDescription, thumbnails, channelTitle } = firstItem ? firstItem.snippet : {};
 
   playListItems = playListItems.map((item) => {
     const {

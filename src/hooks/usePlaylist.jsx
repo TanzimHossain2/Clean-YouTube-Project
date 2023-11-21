@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import getPlaylist from "../api";
 import storage from "../utils/Store";
-const STORAGE_KEY = "cy_playlists_state";
+const STORAGE_KEY = "cy_playlists_state"; 
 const DEFAULT_STATE = {
   playlists: {},
   recentPlaylists: [],
