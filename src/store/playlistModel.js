@@ -1,5 +1,6 @@
+// playlistModel.js
 import { action, thunk, persist } from "easy-peasy";
-import getPlaylist from "../api";
+import getPlaylists from "../api";
 
 const playlistModel = persist({
     data: {},
@@ -20,18 +21,16 @@ const playlistModel = persist({
 
         actions.setLoading(true);
         try {
-            const playlist = await getPlaylist(playlistId);
+            const playlist = await getPlaylists(playlistId);
             actions.addPlaylist(playlist);
         } catch (error) {
             actions.setError(error.response?.data?.error?.message || "Something went wrong");
         } finally {
             actions.setLoading(false);
         }
-
     }),
+
     getPlaylistById: (state, playlistId) => state.data[playlistId],
-
 });
-
 
 export default playlistModel;

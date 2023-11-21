@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
-const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle, playlistId }) => {
+const PlayListCard = ({ playlist }) => {
+  const { playlistThumbnails, playlistTitle, channelTitle, playlistId } = playlist;
   const addFavorite = useStoreActions(actions => actions.favourites.addFavorite);
   const removeFavorite = useStoreActions(actions => actions.favourites.removeFavorite);
   const recentPlaylists = useStoreActions(actions => actions.recentPlaylists.addRecent);
@@ -54,10 +55,12 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle, playlis
 };
 
 PlayListCard.propTypes = {
-  playlistThumbnails: PropTypes.shape({ url: PropTypes.string }),
-  playlistTitle: PropTypes.string,
-  channelTitle: PropTypes.string,
-  playlistId: PropTypes.string,
+  playlist: PropTypes.shape({
+    playlistThumbnails: PropTypes.shape({ url: PropTypes.string }),
+    playlistTitle: PropTypes.string,
+    channelTitle: PropTypes.string,
+    playlistId: PropTypes.string,
+  }),
 };
 
 export default PlayListCard;

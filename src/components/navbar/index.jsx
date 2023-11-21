@@ -5,12 +5,13 @@ import Typography from "@mui/material/Typography";
 import { Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
 import PlayListForm from "../playlist form";
-import PropsType from "prop-types";
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
+import { useStoreActions } from "easy-peasy";
 
-const Navbar = ({ PlaylistById }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const getPlaylist = useStoreActions((actions) => actions.Playlists.getPlaylist);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,8 +21,9 @@ const Navbar = ({ PlaylistById }) => {
     setOpen(false);
   };
 
-  const getPlaylistId = (playlistId) => {
-    PlaylistById(playlistId);
+  const handleSubmit = (playlistId) => {
+    getPlaylist(playlistId);
+    handleClose();
   };
 
   return (
@@ -52,17 +54,13 @@ const Navbar = ({ PlaylistById }) => {
             <PlayListForm
               open={open}
               handleClose={handleClose}
-              getPlaylistId={getPlaylistId}
+              handleSubmit={handleSubmit}
             />
           </Toolbar>
         </Container>
       </AppBar>
     </Box>
   );
-};
-
-Navbar.propTypes = {
-  PlaylistById: PropsType.func.isRequired,
 };
 
 export default Navbar;

@@ -1,31 +1,22 @@
-import { useStoreActions } from "easy-peasy";
-import { useEffect } from "react";
+// HomePage.js
 import { Container, Grid } from "@mui/material";
 import PlayListCard from "../playlist-card-itms";
-import PropsTypes from "prop-types";
+import {useStoreState } from "easy-peasy";
 
-const playlistID = "PL_XxuZqN0xVD0op-QDEgyXFA4fRPChvkl";
 
-const HomePage = ({ playlistArray }) => {
+const HomePage = () => {
+  const playlistData = useStoreState((state) => state.Playlists.data);
+  const playlistArray = Object.values(playlistData);
   
-  const playlist = useStoreActions((actions) => actions.Playlists);
-  useEffect(() => {
-    playlist.getPlaylist(playlistID);
-  }, []);
-
   return (
+    
     <Container maxWidth={"lg"} sx={{ marginTop: 16 }}>
-      {playlistArray.length > 0 && (
+      {playlistArray && playlistArray.length > 0 && (
         <Grid container alignItems={"stretch"}>
+        
           {playlistArray.map((item, index) => (
             <Grid item xs={12} md={6} lg={4} mb={2} key={index}>
-              <PlayListCard
-                key={item.id}
-                channelTitle={item.channelTitle}
-                playlistThumbnails={item.playlistThumbnails}
-                playlistTitle={item.playlistTitle}
-                playlistId={item.playlistId}
-              />
+              <PlayListCard playlist={item} />
             </Grid>
           ))}
         </Grid>
@@ -34,8 +25,5 @@ const HomePage = ({ playlistArray }) => {
   );
 };
 
-HomePage.propTypes = {
-  playlistArray: PropsTypes.array.isRequired,
-};
 
 export default HomePage;
