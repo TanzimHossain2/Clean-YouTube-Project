@@ -6,8 +6,7 @@ import recentModel from './recentsModel';
 const store = createStore({
   Playlists: PlaylistModel,
   favourites: favoriteModel,
-  recentPlaylists:recentModel
-
+  recentPlaylists: recentModel,
 });
 
 export default store;

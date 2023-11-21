@@ -28,7 +28,8 @@ const playlistModel = persist({
             actions.setLoading(false);
         }
 
-    })
+    }),
+    getPlaylistById: (state, playlistId) => state.data[playlistId],
 
 });
 
