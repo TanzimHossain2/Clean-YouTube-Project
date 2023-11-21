@@ -1,34 +1,36 @@
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Typography from "@mui/material/Typography";
-import { Box, Button, Stack } from "@mui/material";
-import { PlayArrow } from "@mui/icons-material";
-import PropsType from "prop-types";
+// PlayListCard.js
+import { Card, CardMedia, CardContent, CardActions, Typography, Box, Button, Stack } from "@mui/material";
+import { PlayArrow, Star, StarBorder } from "@mui/icons-material";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
-const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
-  const style = {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    margin: 1,
+const PlayListCard = ({ playlist }) => {
+  const { playlistThumbnails, playlistTitle, channelTitle, playlistId } = playlist;
+  const addFavorite = useStoreActions(actions => actions.favourites.addFavorite);
+  const removeFavorite = useStoreActions(actions => actions.favourites.removeFavorite);
+  const recentPlaylists = useStoreActions(actions => actions.recentPlaylists.addRecent);
+  const isFavorite = useStoreState(state => state.favourites.items.includes(playlistId));
+
+  const handleFavoriteToggle = () => {
+    if (isFavorite) {
+      removeFavorite(playlistId);
+    } else {
+      addFavorite(playlistId);
+    }
+  };
+
+  const handlePlaylistClick = () => {
+    // Add to recent playlists when clicked
+    recentPlaylists(playlistId);
   };
 
   return (
-    <Card sx={style}>
-      <CardMedia
-        component="img"
-        image={playlistThumbnails.url}
-        alt={playlistTitle}
-      />
+    <Card sx={{ height: "100%", display: "flex", flexDirection: "column", margin: 1 }}>
+      <CardMedia component="img" image={playlistThumbnails.url} alt={playlistTitle} />
       <CardContent>
         <Typography variant="h6" color="text.primary">
-          {`${
-            playlistTitle.length > 50
-              ? playlistTitle.substr(0, 50) + "..."
-              : playlistTitle
-          }`}
+          {playlistTitle.length > 50 ? playlistTitle.substr(0, 50) + "..." : playlistTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {channelTitle}
@@ -36,7 +38,7 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <CardActions disableSpacing>
-        <Button>
+        <Button to={`/player/${playlistId}`} component={Link} onClick={handlePlaylistClick}>
           <Stack spacing={1} direction={"row"} alignItems={"center"}>
             <PlayArrow />
             <Typography variant="body2" fontWeight={600}>
@@ -44,17 +46,21 @@ const PlayListCard = ({ playlistThumbnails, playlistTitle, channelTitle }) => {
             </Typography>
           </Stack>
         </Button>
+        <Button onClick={handleFavoriteToggle}>
+          {isFavorite ? <Star /> : <StarBorder />}
+        </Button>
       </CardActions>
     </Card>
   );
 };
 
 PlayListCard.propTypes = {
-  playlistThumbnails: PropsType.shape({
-    url: PropsType.string,
+  playlist: PropTypes.shape({
+    playlistThumbnails: PropTypes.shape({ url: PropTypes.string }),
+    playlistTitle: PropTypes.string,
+    channelTitle: PropTypes.string,
+    playlistId: PropTypes.string,
   }),
-  playlistTitle: PropsType.string,
-  channelTitle: PropsType.string,
 };
 
 export default PlayListCard;

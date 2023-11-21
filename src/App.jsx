@@ -1,38 +1,24 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/navbar";
-import usePlaylist from "./hooks/usePlaylist";
-import PlayListCard from "./components/playlist-card-itms";
-import { Container, Grid } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import HomePage from "./components/pages/HomePage";
+import NotFound from "./components/pages/Error404";
+import PlayerPage from "./components/pages/PlayerPage";
+
 const App = () => {
-  const { playlists, getPlaylistById, error } = usePlaylist();
-  if (error) {
-    return alert("Something went wrong");
-  }
-  const playlistArray = Object.values(playlists);
   return (
-    <>
+    <BrowserRouter>
       <CssBaseline />
-      <Container maxWidth={"lg"} sx={{ marginTop: 16 }}>
-        <Navbar PlaylistById={getPlaylistById} />
-        {playlistArray.length > 0 && (
-          <Grid container alignItems={'stretch'} >
-            {playlistArray.map((item) => (
-              <>
-                <Grid item xs={12} md={6} lg={4} mb={2}>
-                  <PlayListCard
-                    key={item.id}
-                    channelTitle={item.channelTitle}
-                    playlistThumbnails={item.playlistThumbnails}
-                    playlistTitle={item.playlistTitle}
-                  />
-                </Grid>
-              </>
-            ))}
-          </Grid>
-        )}
-      </Container>
-    </>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/player/:playlistId" element={<PlayerPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
 export default App;
+
