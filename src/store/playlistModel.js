@@ -1,4 +1,3 @@
-// playlistModel.js
 import { action, thunk, persist } from "easy-peasy";
 import getPlaylists from "../api";
 
@@ -30,7 +29,13 @@ const playlistModel = persist({
         }
     }),
 
-    getPlaylistById: (state, playlistId) => state.data[playlistId],
+    // Correctly define getPlaylistById as a thunk
+    getPlaylistById: thunk((actions, playlistId, helpers) => {
+        const playlist = helpers.getState().data[playlistId];
+        if (playlist) return playlist;
+
+        return actions.getPlaylist(playlistId);
+    }),
 });
 
 export default playlistModel;

@@ -4,26 +4,55 @@ import { PlayArrow, Star, StarBorder } from "@mui/icons-material";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { useEffect, useState } from "react";
 
-const PlayListCard = ({ playlist }) => {
+const PlayListCard = ({ playlist  }) => {
   const { playlistThumbnails, playlistTitle, channelTitle, playlistId } = playlist;
   const addFavorite = useStoreActions(actions => actions.favourites.addFavorite);
   const removeFavorite = useStoreActions(actions => actions.favourites.removeFavorite);
   const recentPlaylists = useStoreActions(actions => actions.recentPlaylists.addRecent);
   const isFavorite = useStoreState(state => state.favourites.items.includes(playlistId));
 
-  const handleFavoriteToggle = () => {
-    if (isFavorite) {
-      removeFavorite(playlistId);
-    } else {
-      addFavorite(playlistId);
+  const [updatingFavorite, setUpdatingFavorite] = useState(false);
+  
+  // const handleFavoriteToggle = () => {
+  //   if (isFavorite) {
+  //     removeFavorite(playlistId);
+  //   } else {
+  //     addFavorite(playlistId);
+  //   }
+  // };
+
+  const handleFavoriteToggle = async () => {
+    if (!updatingFavorite) {
+      setUpdatingFavorite(true);
+      try {
+        if (isFavorite) {
+          await removeFavorite(playlistId);
+        } else {
+          await addFavorite(playlistId);
+        }
+      } catch (error) {
+        console.error("Error updating favorite:", error);
+      } finally {
+        setUpdatingFavorite(false);
+      }
     }
   };
 
-  const handlePlaylistClick = () => {
+  const handlePlaylistClick = async () => {
     // Add to recent playlists when clicked
     recentPlaylists(playlistId);
   };
+
+  useEffect(() => {
+    handlePlaylistClick(); // Call the function inside useEffect
+  }, [recentPlaylists, playlistId]);
+
+  // const handlePlaylistClick = () => {
+  //   // Add to recent playlists when clicked
+  //   recentPlaylists(playlistId);
+  // };
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column", margin: 1 }}>
