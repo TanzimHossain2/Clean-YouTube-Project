@@ -49,10 +49,6 @@ const PlayListCard = ({ playlist  }) => {
     handlePlaylistClick(); // Call the function inside useEffect
   }, [recentPlaylists, playlistId]);
 
-  // const handlePlaylistClick = () => {
-  //   // Add to recent playlists when clicked
-  //   recentPlaylists(playlistId);
-  // };
 
   return (
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column", margin: 1 }}>
