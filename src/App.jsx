@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./components/pages/HomePage";
 import NotFound from "./components/pages/Error404";
 import PlayerPage from "./components/pages/PlayerPage";
+import RecentPlaylists from "./components/recent-playlists";
+import FavoritePlaylists from "./components/favorite-playlists";
 
 const App = () => {
   return (
@@ -12,13 +14,21 @@ const App = () => {
       <CssBaseline />
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <FavoritePlaylists />
+              <HomePage />
+            </>
+          }
+        />
         <Route path="/player/:playlistId" element={<PlayerPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <RecentPlaylists />
     </BrowserRouter>
   );
 };
 
 export default App;
-
