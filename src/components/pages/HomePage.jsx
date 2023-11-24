@@ -5,7 +5,7 @@ import {useStoreState } from "easy-peasy";
 
 
 const HomePage = () => {
-  const playlistData = useStoreState((state) => state.Playlists.data);
+  const playlistData = useStoreState((state) => state.playlists.data);
   const playlistArray = Object.values(playlistData);
   
   return (

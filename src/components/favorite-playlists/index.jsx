@@ -5,8 +5,8 @@ import PlayListCard from '../playlist-card-itms';
 import { Container, Grid } from '@mui/material';
 
 const FavoritePlaylists = () => {
-  const favoritePlaylistIds = useStoreState((state) => state.favourites.items);
-  const getPlaylistById = useStoreActions((actions) => actions.Playlists.getPlaylistById);
+  const favoritePlaylistIds = useStoreState((state) => state.favorites.items);
+  const getPlaylistById = useStoreActions((actions) => actions.playlists.getPlaylistById);
   const [favoritePlaylists, setFavoritePlaylists] = useState([]);
 
   useEffect(() => {

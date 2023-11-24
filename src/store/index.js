@@ -1,12 +1,16 @@
 import { createStore } from 'easy-peasy';
-import PlaylistModel from './playlistModel';
-import favoriteModel from './favoriteModel';
-import recentModel from './recentsModel';
+import playlistModel from './models/playlistModel';
+import recentModel from './models/recentModel';
+import favoriteModel from './models/favoriteModel';
+import noteModel from './models/noteModel';
+import videoProgressModel from './models/videoProgressModel';
 
 const store = createStore({
-  Playlists: PlaylistModel,
-  favourites: favoriteModel,
+  playlists: playlistModel,
   recentPlaylists: recentModel,
+  favorites: favoriteModel,
+  notes: noteModel,
+  videoProgress: videoProgressModel,
 });
 
 export default store;

@@ -1,4 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
+
+const KEY = import.meta.env.VITE_YouTube_API_KEY; 
 
 /**
  * @description Fetches playlist items from the YouTube API for a given playlist ID.
@@ -7,29 +9,24 @@ import axios from "axios";
  * @param {Array} result - Array to accumulate playlist items.
  * @returns {Array} - Array of playlist items with content details and snippet information.
  */
-const KEY = import.meta.env.VITE_YouTube_API_KEY; // API key stored in .env file
+const getPlaylistItems = async (playlistId, pageToken = '', result = []) => {
+  try {
+    const URL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${KEY}&part=contentDetails,snippet,id&maxResults=50&playlistId=${playlistId}&pageToken=${pageToken}`;
 
-/**
- * @description Helper function to recursively fetch playlist items.
- * @param {string} playlistId - ID of the YouTube playlist.
- * @param {string} pageToken - Token for paginating through results.
- * @param {Array} result - Array to accumulate playlist items.
- * @returns {Array} - Array of playlist items with content details and snippet information.
- */
-const getPlaylistItem = async (playlistId, pageToken = '', result = []) => {
-  const URL = `https://www.googleapis.com/youtube/v3/playlistItems?key=${KEY}&part=contentDetails,snippet,id&maxResults=50&playlistId=${playlistId}&pageToken=${pageToken}`;
+    const { data } = await axios.get(URL);
+    result = [...result, ...data.items];
 
-  const { data } = await axios.get(URL);
-  result = [...result, ...data.items];
+    if (data.nextPageToken) {
+      // If there are more pages, recursively fetch them
+      result = await getPlaylistItems(playlistId, data.nextPageToken, result);
+    }
 
-  if (data.nextPageToken) {
-    // If there are more pages, recursively fetch them
-    result = await getPlaylistItem(playlistId, data.nextPageToken, result);
+    return result;
+  } catch (error) {
+    console.error('Error fetching playlist items:', error.message);
+    throw new Error('Failed to fetch playlist items. Please try again.');
   }
-
-  return result;
 };
-
 
 /**
  * @description Fetches details of a YouTube playlist.
@@ -37,39 +34,48 @@ const getPlaylistItem = async (playlistId, pageToken = '', result = []) => {
  * @returns {Object} - Object containing details of the playlist.
  */
 const getPlaylist = async (playlistId) => {
-  const URL = `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2Cid&id=${playlistId}&key=${KEY}`;
+  try {
+    const URL = `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet%2Cid&id=${playlistId}&key=${KEY}`;
 
-  const { data } = await axios.get(URL);
-  let playListItems = await getPlaylistItem(playlistId);
+    const { data } = await axios.get(URL);
+    if (!data.items || data.items.length === 0) {
+      throw new Error('Playlist not found.');
+    }
 
-  const firstItem = data.items[0];
-  const { channelId, title: playlistTitle, description: playlistDescription, thumbnails, channelTitle } = firstItem ? firstItem.snippet : {};
+    let playlistItems = await getPlaylistItems(playlistId);
 
-  playListItems = playListItems.map((item) => {
-    const {
-      title,
-      description,
-      thumbnails: { medium },
-    } = item.snippet;
+    const firstItem = data.items[0];
+    const { channelId, title: playlistTitle, description: playlistDescription, thumbnails, channelTitle } = firstItem.snippet;
+
+    playlistItems = playlistItems.map((item) => {
+      const {
+        title,
+        description,
+        thumbnails: { medium },
+      } = item.snippet;
+
+      return {
+        id: item.id,
+        title,
+        description,
+        thumbnail: medium,
+        contentDetails: item.contentDetails,
+      };
+    });
 
     return {
-      id: item.id,
-      title,
-      description,
-      thumbnail: medium,
-      contentDetails: item.contentDetails,
+      playlistId,
+      playlistDescription,
+      channelId,
+      playlistTitle,
+      playlistThumbnails: thumbnails.medium,
+      channelTitle,
+      playlistItems,
     };
-  });
-
-  return {
-    playlistId,
-    playlistDescription,
-    channelId,
-    playlistTitle,
-    playlistThumbnails: thumbnails.medium,
-    channelTitle,
-    playListItems,
-  };
+  } catch (error) {
+    console.error('Error fetching playlist details:', error.message);
+    throw new Error('Failed to fetch playlist details. Please try again.');
+  }
 };
 
 export default getPlaylist;

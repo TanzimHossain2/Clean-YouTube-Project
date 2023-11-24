@@ -11,7 +11,7 @@ import { useStoreActions } from "easy-peasy";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const getPlaylist = useStoreActions((actions) => actions.Playlists.getPlaylist);
+  const getPlaylist = useStoreActions((actions) => actions.playlists.getPlaylist);
 
   const handleClickOpen = () => {
     setOpen(true);

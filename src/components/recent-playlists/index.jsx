@@ -4,7 +4,7 @@ import PlayListCard from "../playlist-card-itms";
 import { Container, Grid } from "@mui/material";
 const RecentPlaylists = () => {
     const recentPlaylistIds = useStoreState((state) => state.recentPlaylists.items);
-    const getPlaylistById = useStoreActions((actions) => actions.Playlists.getPlaylistById);
+    const getPlaylistById = useStoreActions((actions) => actions.playlists.getPlaylistById);
 
     // Conditionally render the component
     if (recentPlaylistIds.length === 0) {

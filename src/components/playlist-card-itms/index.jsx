@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 
 const PlayListCard = ({ playlist  }) => {
   const { playlistThumbnails, playlistTitle, channelTitle, playlistId } = playlist;
-  const addFavorite = useStoreActions(actions => actions.favourites.addFavorite);
-  const removeFavorite = useStoreActions(actions => actions.favourites.removeFavorite);
+  const addFavorite = useStoreActions(actions => actions.favorites.addFavorite);
+  const removeFavorite = useStoreActions(actions => actions.favorites.removeFavorite);
   const recentPlaylists = useStoreActions(actions => actions.recentPlaylists.addRecent);
-  const isFavorite = useStoreState(state => state.favourites.items.includes(playlistId));
+  const isFavorite = useStoreState(state => state.favorites.items.includes(playlistId));
 
   const [updatingFavorite, setUpdatingFavorite] = useState(false);
   

@@ -7,10 +7,10 @@ import { useParams } from "react-router-dom";
 
 const PlayerPage = () => {
   const getPlaylistById = useStoreActions(
-    (actions) => actions.Playlists.getPlaylistById
+    (actions) => actions.playlists.getPlaylistById
   );
   const { playlistId } = useParams();
-  const playlistData = getPlaylistById(playlistId); // Get the playlist data from the store
+  const playlistData = getPlaylistById(playlistId);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const PlayerPage = () => {
       await getPlaylistById(playlistId);
       // Set the first video as selected when playlist data is available
       setSelectedVideo(
-        playlistData?.playListItems[0]?.contentDetails.videoId || null
+        playlistData?.playlistItems[0]?.contentDetails.videoId || null
       );
     };
 
@@ -52,7 +52,8 @@ const PlayerPage = () => {
               {playlistData?.playlistTitle} Videos
             </Typography>
             <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-              {playlistData?.playListItems.map((item) => (
+              {playlistData?.playlistItems.map((item) => (
+              
                 <li
                   key={item.id}
                   onClick={() => handleVideoClick(item.contentDetails.videoId)}
@@ -63,6 +64,7 @@ const PlayerPage = () => {
                     alignItems: "center",
                   }}
                 >
+                 
                   <Typography
                     sx={{
                       flex: 1,
