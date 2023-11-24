@@ -1,0 +1,80 @@
+/* Preset CSS */
+*,
+*:before,
+*:after {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body,
+html {
+  font-family: CircularStdBook;
+  font-weight: normal;
+  font-size: 1rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/*---------------------------------------------*/
+a {
+  cursor: pointer;
+}
+a:focus {
+  outline: none;
+}
+a:hover {
+  text-decoration: none;
+  transition: all 0.4s;
+}
+
+/*---------------------------------------------*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0px;
+}
+
+ul,
+li {
+  padding: 0;
+  margin: 0px;
+  list-style-type: none;
+}
+i,
+svg {
+  margin: 0;
+  padding: 0;
+}
+/*---------------------------------------------*/
+input,
+textarea,
+label {
+  display: block;
+  outline: none;
+  border: none;
+}
+
+/*---------------------------------------------*/
+button {
+  outline: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
+}
+
+iframe {
+  border: none;
+}
+
+

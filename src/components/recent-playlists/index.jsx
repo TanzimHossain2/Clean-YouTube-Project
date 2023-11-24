@@ -13,7 +13,7 @@ const RecentPlaylists = () => {
 
   return (
     <Container maxWidth={"lg"} sx={{ marginTop: 16 }}>
-      <h4>Recent Playlists</h4>
+      <h3>Recent Playlists</h3>
       {recentPlaylistIds.length > 0 && (
         <Grid container alignItems={"stretch"}>
           {recentPlaylistIds.map((playlistId, index) => (

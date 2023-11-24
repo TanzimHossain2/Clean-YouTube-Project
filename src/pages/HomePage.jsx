@@ -1,16 +1,15 @@
 // HomePage.js
 import { Container, Grid } from "@mui/material";
-import PlayListCard from "../playlist-card-itms";
-import {useStoreState } from "easy-peasy";
-
+import PlayListCard from "../components/playlist-card-itms";
+import { useStoreState } from "easy-peasy";
 
 const HomePage = () => {
   const playlistData = useStoreState((state) => state.playlists.data);
   const playlistArray = Object.values(playlistData);
-  
+
   return (
-    
     <Container maxWidth={"lg"} sx={{ marginTop: 16 }}>
+        <h3>All Playlists</h3>
       {playlistArray && playlistArray.length > 0 && (
         <Grid container alignItems={"stretch"}>
         
@@ -24,6 +23,5 @@ const HomePage = () => {
     </Container>
   );
 };
-
 
 export default HomePage;

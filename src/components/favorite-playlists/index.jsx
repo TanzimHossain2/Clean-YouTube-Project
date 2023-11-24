@@ -26,7 +26,7 @@ const FavoritePlaylists = () => {
 
   return (
     <Container maxWidth={'lg'} sx={{ marginTop: 16 }}>
-      <h2>Favorite Playlists</h2>
+      <h3>Favorite Playlists</h3>
       {favoritePlaylists.length > 0 && (
         <Grid container alignItems={'stretch'}>
           {favoritePlaylists.map((playlist, index) => (
